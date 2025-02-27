@@ -1,7 +1,7 @@
 import {ImageData} from './ImageData'
 
 type IDocumentListener = {
-	notify: (changedImage?: ImageData) => void,
+	updateThisOnChange: (changedImage?: ImageData) => void,
 }
 
 export type {

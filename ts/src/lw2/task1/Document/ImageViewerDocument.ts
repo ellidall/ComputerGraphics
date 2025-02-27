@@ -15,7 +15,7 @@ class ImageViewerDocument {
 	}
 
 	private notifyListeners() {
-		this.listeners.forEach(listener => listener.notify(this.currentImage))
+		this.listeners.forEach(listener => listener.updateThisOnChange(this.currentImage))
 	}
 }
 
