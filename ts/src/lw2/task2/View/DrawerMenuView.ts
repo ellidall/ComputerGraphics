@@ -27,6 +27,7 @@ class DrawerMenuView {
             z-index: 1000;
             display: flex;
             gap: 20px;
+            user-select: none;
         `
 
 		menuBar.append(this.createFileMenu())

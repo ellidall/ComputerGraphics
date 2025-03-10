@@ -33,7 +33,7 @@ class DrawerCanvasView implements IDocumentListener {
 		this.updateCanvas()
 	}
 
-	notify() {
+	updateThisOnChange() {
 		this.updateCanvas()
 	}
 

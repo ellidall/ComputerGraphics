@@ -1,8 +1,8 @@
 import {IDocumentListener} from './IDocumentListener'
 
 class DrawerDocument {
-	private readonly DEFAULT_WIDTH = 1920
-	private readonly DEFAULT_HEIGHT = 1024
+	private readonly DEFAULT_WIDTH = 1200
+	private readonly DEFAULT_HEIGHT = 700
 
 	private width = this.DEFAULT_WIDTH
 	private height = this.DEFAULT_HEIGHT
@@ -48,7 +48,7 @@ class DrawerDocument {
 	}
 
 	private notifyListeners() {
-		this.listeners.forEach(listener => listener.notify())
+		this.listeners.forEach(listener => listener.updateThisOnChange())
 	}
 }
 

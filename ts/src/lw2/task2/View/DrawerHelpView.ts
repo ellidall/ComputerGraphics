@@ -39,6 +39,7 @@ class DrawerHelpView {
             justify-content: center;
             align-items: center;
             z-index: 1001;
+            user-select: none;
         `
 
 		this.content.style.cssText = `

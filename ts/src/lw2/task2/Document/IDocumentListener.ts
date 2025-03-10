@@ -1,5 +1,5 @@
 type IDocumentListener = {
-	notify: () => void,
+	updateThisOnChange: () => void,
 }
 
 export type {IDocumentListener}
