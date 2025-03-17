@@ -1,0 +1,88 @@
+[
+  {
+    "id": "fire",
+    "name": "Огонь",
+    "image": "/icons/fire.png"
+  },
+  {
+    "id": "water",
+    "name": "Вода",
+    "image": "/icons/water.png"
+  },
+  {
+    "id": "earth",
+    "name": "Земля",
+    "image": "/icons/earth.png"
+  },
+  {
+    "id": "air",
+    "name": "Воздух",
+    "image": "/icons/air.png"
+  },
+  {
+    "id": "steam",
+    "name": "Пар",
+    "image": "/icons/steam.png"
+  },
+  {
+    "id": "thunderstorm",
+    "name": "Гроза",
+    "image": "/icons/thunderstorm.png"
+  },
+  {
+    "id": "rainbow",
+    "name": "Радуга",
+    "description": "Природное явление",
+    "image": "/icons/rainbow.png"
+  },
+  {
+    "id": "volcano",
+    "name": "Вулкан",
+    "image": "/icons/volcano.png"
+  },
+  {
+    "id": "tornado",
+    "name": "Торнадо",
+    "image": "/icons/tornado.png"
+  },
+  {
+    "id": "ice",
+    "name": "Лед",
+    "image": "/icons/ice.png"
+  },
+  {
+    "id": "cloud",
+    "name": "Облако",
+    "image": "/icons/cloud.png"
+  },
+  {
+    "id": "lightning",
+    "name": "Молния",
+    "image": "/icons/lightning.png"
+  },
+  {
+    "id": "geyser",
+    "name": "Гейзер",
+    "image": "/icons/geyser.png"
+  },
+  {
+    "id": "rain",
+    "name": "Дождь",
+    "image": "/icons/rain.png"
+  },
+  {
+    "id": "snow",
+    "name": "Снег",
+    "image": "/icons/snow.png"
+  },
+  {
+    "id": "fog",
+    "name": "Туман",
+    "image": "/icons/fog.png"
+  },
+  {
+    "id": "lava",
+    "name": "Лава",
+    "image": "/icons/lava.png"
+  }
+]

@@ -1,8 +1,8 @@
 import {IDocumentListener} from './IDocumentListener'
 
 class DrawerDocument {
-	private readonly DEFAULT_WIDTH = 1200
-	private readonly DEFAULT_HEIGHT = 700
+	private readonly DEFAULT_WIDTH = 1700
+	private readonly DEFAULT_HEIGHT = 720
 
 	private width = this.DEFAULT_WIDTH
 	private height = this.DEFAULT_HEIGHT

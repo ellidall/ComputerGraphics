@@ -1,0 +1,59 @@
+.app-container {
+    display: flex;
+    height: 100vh;
+    user-select: none;
+}
+
+.left-panel {
+    width: 30%;
+    border-right: 2px solid #ccc;
+}
+
+.right-panel {
+    width: 70%;
+    position: relative;
+}
+
+.elements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.studied-element {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.element-item {
+    width: min-content;
+}
+
+.element {
+    cursor: move;
+    transition: transform 0.2s;
+}
+
+.delete-zone {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 20px;
+    background: #ffcccc;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.draggable-element {
+    z-index: 10;
+}

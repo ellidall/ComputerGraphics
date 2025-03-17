@@ -18,5 +18,6 @@ class DrawerAppView {
 		this.canvasView.setBrashColor(color)
 	}
 }
+// шахматная доска
 
 export {DrawerAppView}
