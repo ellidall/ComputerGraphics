@@ -8,9 +8,12 @@
     "lint": "node eslint.mjs && tsc"
   },
   "dependencies": {
-    "file-saver": "^2.0.5"
+    "earcut": "^3.0.1",
+    "file-saver": "^2.0.5",
+    "gl-matrix": "^3.4.3"
   },
   "devDependencies": {
+    "@types/earcut": "^3.0.0",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20.11.26",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
