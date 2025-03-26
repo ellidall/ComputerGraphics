@@ -17,7 +17,7 @@ class Parabola {
 		gl.enableVertexAttribArray(positionLocation)
 
 		const colorLocation = gl.getUniformLocation(this.program, 'u_color')
-		gl.uniform4f(colorLocation, 1, 1, 1, 1)
+		gl.uniform4f(colorLocation, 0, 0, 1, 1)
 
 		gl.drawArrays(gl.LINE_STRIP, 0, this.vertexCount)
 	}

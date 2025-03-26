@@ -19,7 +19,7 @@ class Axes {
 		const positionLocation = gl.getAttribLocation(this.program, 'position')
 
 		const colorLocation = gl.getUniformLocation(this.program, 'u_color')
-		gl.uniform4f(colorLocation, 0, 1, 0, 1)
+		gl.uniform4f(colorLocation, 0, 0, 0, 1)
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.axesBuffer)
 		gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)

@@ -29,10 +29,7 @@ class App {
 		this.parabola = new Parabola(gl, this.program)
 		this.axes = new Axes(gl, this.program)
 
-		this.orthoMatrix = computeOrthoMatrix(
-			this.canvas.width,
-			this.canvas.height,
-		)
+		this.orthoMatrix = computeOrthoMatrix(this.canvas.width, this.canvas.height,)
 		this.setupEventListeners()
 	}
 
@@ -40,13 +37,12 @@ class App {
 	render = () => {
 		requestAnimationFrame(this.render)
 		const gl = this.gl
+		gl.clearColor(1, 1, 1, 1)
+		gl.clear(gl.COLOR_BUFFER_BIT)
 
 		const matrixLocation = gl.getUniformLocation(this.program, 'u_matrix')
 		gl.useProgram(this.program)
 		gl.uniformMatrix4fv(matrixLocation, false, this.orthoMatrix)
-
-		gl.clearColor(0, 0, 0, 1)
-		gl.clear(gl.COLOR_BUFFER_BIT)
 
 		this.axes.render()
 		this.parabola.render()

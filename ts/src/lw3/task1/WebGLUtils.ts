@@ -50,8 +50,8 @@ const createShaderProgram = (gl: WebGLRenderingContext): WebGLProgram => {
 }
 
 const computeOrthoMatrix = (canvasWidth: number, canvasHeight: number): Float32Array => {
-	const worldLeft = -5
-	const worldRight = 5
+	const worldLeft = -10
+	const worldRight = 10
 	const worldBottom = -10
 	const worldTop = 10
 	const worldWidth = worldRight - worldLeft
