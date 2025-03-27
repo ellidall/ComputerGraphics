@@ -60,6 +60,7 @@ class App {
 		this.canvas.width = window.innerWidth
 		this.canvas.height = window.innerHeight
 		this.gl.viewport(0, 0, window.innerWidth, window.innerHeight)
+		// переименовать
 		this.orthoMatrix = computeOrthoMatrix(
 			this.canvas.width,
 			this.canvas.height,

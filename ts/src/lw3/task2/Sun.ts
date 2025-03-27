@@ -1,5 +1,5 @@
-import {Position, Renderable} from '../types'
-import {getWorldSize} from '../WebGLUtils'
+import {Position, Renderable} from './types'
+import {getWorldSize} from './WebGLUtils'
 
 class Sun implements Renderable {
 	private buffer: WebGLBuffer | null = null

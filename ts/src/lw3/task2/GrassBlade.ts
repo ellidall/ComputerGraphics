@@ -1,4 +1,4 @@
-import {Position, Renderable} from '../types'
+import {Position, Renderable} from './types'
 
 type GrassBladeData = {
 	firstAngle: Position,
@@ -25,7 +25,7 @@ class GrassBlade implements Renderable {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer)
 		gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
 		gl.enableVertexAttribArray(posLoc)
-		gl.uniform4f(colorLoc, 0.0, 0.6, 0.0, 1.0)
+		gl.uniform4f(colorLoc, 0.4, 0.5, 0.2, 1.0)
 		gl.drawArrays(gl.TRIANGLES, 0, this.vertexCount)
 	}
 

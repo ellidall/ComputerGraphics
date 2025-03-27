@@ -1,5 +1,5 @@
-import {Position, Renderable} from '../types'
-import {getWorldSize} from '../WebGLUtils'
+import { Position, Renderable } from './types'
+import { getWorldSize } from './WebGLUtils'
 
 type CloudData = {
 	position: Position,
@@ -8,15 +8,17 @@ type CloudData = {
 
 class Cloud implements Renderable {
 	private buffer: WebGLBuffer | null = null
-	private segments = 20
-	private radiusX = 1.5
-	private radiusY = 0.8
+	private segments = 60
+	private radiusX: number
+	private radiusY: number
 
 	constructor(
 		private readonly gl: WebGLRenderingContext,
 		private readonly program: WebGLProgram,
 		private data: CloudData,
 	) {
+		this.radiusX = 1.5 + Math.random() * 1.1
+		this.radiusY = 0.7 + Math.random() * 0.6
 		this.initBuffer()
 	}
 
@@ -33,11 +35,12 @@ class Cloud implements Renderable {
 		gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length / 2)
 	}
 
+	// управлять позицией вершин с помощью матрицы
 	update() {
-		const {width} = getWorldSize()
-		this.data.position.x += this.data.speed
-		if (this.data.position.x > width / 2) {
-			this.data.position.x = -width / 2
+		const { width } = getWorldSize()
+		this.data.position.x -= this.data.speed
+		if (this.data.position.x > width) {
+			this.data.position.x = -width
 		}
 	}
 
@@ -55,7 +58,10 @@ class Cloud implements Renderable {
 		const vertices: number[] = []
 		for (let i = 0; i <= this.segments; i++) {
 			const angle = (i / this.segments) * 2 * Math.PI
-			vertices.push(this.data.position.x + this.radiusX * Math.cos(angle), this.data.position.y + this.radiusY * Math.sin(angle))
+			vertices.push(
+				this.data.position.x + this.radiusX * Math.cos(angle),
+				this.data.position.y + this.radiusY * Math.sin(angle)
+			)
 		}
 		vertices.push(this.data.position.x, this.data.position.y)
 		return vertices
