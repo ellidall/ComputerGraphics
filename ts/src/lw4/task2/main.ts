@@ -34,24 +34,28 @@ class Maze {
 }
 
 class Player {
-    position: vec3       // Позиция игрока (x, y, z)
-    direction: number    // Направление взгляда в радианах
+    position: vec3
+    direction: number
+    speed: number
+    rotationSpeed: number
 
     constructor() {
         this.position = vec3.fromValues(1.5, 0.5, 1.5)
         this.direction = 0
+        this.speed = 1
+        this.rotationSpeed = 1.5
     }
 
     // Движение вперед/назад (если step отрицательный – движение назад)
-    moveForward(maze: Maze, step: number = 0.1) {
-        const nextX = this.position[0] + Math.cos(this.direction) * step
-        const nextZ = this.position[2] + Math.sin(this.direction) * step
+    moveForward(maze: Maze, deltaTime: number) {
+        const nextX = this.position[0] + Math.cos(this.direction) * this.speed * deltaTime
+        const nextZ = this.position[2] + Math.sin(this.direction) * this.speed * deltaTime
         const cellX = Math.floor(nextX)
         const cellZ = Math.floor(nextZ)
         if (
             cellX >= 0 && cellX < maze.size &&
             cellZ >= 0 && cellZ < maze.size &&
-            maze.grid[cellZ][cellX] === 0
+            maze.grid[cellZ]![cellX] === 0
         ) {
             this.position[0] = nextX
             this.position[2] = nextZ
@@ -59,18 +63,18 @@ class Player {
     }
 
     // Стрейф (боковое движение). Если step отрицательный – влево, если положительный – вправо.
-    strafe(maze: Maze, step: number = 0.1) {
+    strafe(maze: Maze, deltaTime: number) {
         // Вычисляем вектор вправо: (sin, 0, -cos) по отношению к направлению взгляда
         const rightX = Math.sin(this.direction)
         const rightZ = -Math.cos(this.direction)
-        const nextX = this.position[0] + rightX * step
-        const nextZ = this.position[2] + rightZ * step
+        const nextX = this.position[0] + rightX * this.speed * deltaTime
+        const nextZ = this.position[2] + rightZ * this.speed * deltaTime
         const cellX = Math.floor(nextX)
         const cellZ = Math.floor(nextZ)
         if (
             cellX >= 0 && cellX < maze.size &&
             cellZ >= 0 && cellZ < maze.size &&
-            maze.grid[cellZ][cellX] === 0
+            maze.grid[cellZ]![cellX] === 0
         ) {
             this.position[0] = nextX
             this.position[2] = nextZ
@@ -78,8 +82,8 @@ class Player {
     }
 
     // Поворот
-    rotate(angle: number) {
-        this.direction += angle
+    rotate(deltaTime: number) {
+        this.direction += this.rotationSpeed * deltaTime
     }
 }
 
@@ -101,6 +105,7 @@ class App {
 
     // ===== Новое: объект для хранения состояний клавиш =====
     private keys: { [key: string]: boolean } = {}
+    private lastTime: number = 0;
 
     constructor() {
         this.canvas = document.createElement('canvas')
@@ -129,11 +134,11 @@ class App {
         window.addEventListener('keydown', this.handleKeyDown)
         window.addEventListener('keyup', this.handleKeyUp)
 
-        this.render()
+        this.render(this.lastTime)
     }
 
     run() {
-        this.render()
+        this.render(this.lastTime)
     }
 
     // ===== Новое: Обработчик keydown сохраняет состояние клавиши =====
@@ -186,32 +191,34 @@ class App {
     }
 
     // ===== Новое: Обновление позиции игрока на основе состояний клавиш =====
-    private updatePlayer() {
+    private updatePlayer(deltaTime: number) {
         // Движение вперед/назад
         if (this.keys['ArrowUp']) {
-            this.player.moveForward(this.maze, 0.005)
+            this.player.moveForward(this.maze, deltaTime)
         }
         if (this.keys['ArrowDown']) {
-            this.player.moveForward(this.maze, -0.005)
+            this.player.moveForward(this.maze, -deltaTime)
         }
         // Поворот
         if (this.keys['ArrowLeft']) {
-            this.player.rotate(-0.008)
+            this.player.rotate(-deltaTime)
         }
         if (this.keys['ArrowRight']) {
-            this.player.rotate(0.008)
+            this.player.rotate(deltaTime)
         }
         // Стрейф (боковое движение): добавляем, например, клавиши 'a' и 'd'
         if (this.keys['a'] || this.keys['A']) {
-            this.player.strafe(this.maze, 0.005)
+            this.player.strafe(this.maze, deltaTime)
         }
         if (this.keys['d'] || this.keys['D']) {
-            this.player.strafe(this.maze, -0.005)
+            this.player.strafe(this.maze, - deltaTime)
         }
     }
 
     // Основной цикл рендеринга
-    private render = () => {
+    private render = (time: number) => {
+        const deltaTime = (time - this.lastTime) / 1000; // time в миллисекундах, делим на 1000, чтобы получить секунды
+        this.lastTime = time;
         requestAnimationFrame(this.render)
         const gl = this.gl
         gl.enable(gl.DEPTH_TEST)
@@ -219,7 +226,7 @@ class App {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
         // Перед отрисовкой обновляем позицию игрока
-        this.updatePlayer()
+        this.updatePlayer(deltaTime)
 
         const projectionMatrix = mat4.create()
         const fov = (60 * Math.PI) / 180
@@ -241,7 +248,7 @@ class App {
 
         for (let z = 0; z < this.maze.size; z++) {
             for (let x = 0; x < this.maze.size; x++) {
-                if (this.maze.grid[z][x] === 1) {
+                if (this.maze.grid[z]![x] === 1) {
                     const modelMatrix = mat4.create()
                     mat4.translate(modelMatrix, modelMatrix, [x, 0, z])
                     const mvpMatrix = mat4.create()
