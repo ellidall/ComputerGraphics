@@ -17,37 +17,24 @@ class Player {
     moveForward(maze: Maze, deltaTime: number) {
         const nextX = this.position[0] + Math.cos(this.direction) * this.speed * deltaTime
         const nextZ = this.position[2] + Math.sin(this.direction) * this.speed * deltaTime
-        const cellX = Math.floor(nextX)
-        const cellZ = Math.floor(nextZ)
-        if (
-            cellX >= 0 && cellX < maze.size &&
-            cellZ >= 0 && cellZ < maze.size &&
-            maze.grid[cellZ]![cellX] === 0
-        ) {
-            this.position[0] = nextX
-            this.position[2] = nextZ
-        }
+        this.updatePosition(maze, nextX, nextZ)
     }
 
     strafe(maze: Maze, deltaTime: number) {
-        const rightX = Math.sin(this.direction)
-        const rightZ = -Math.cos(this.direction)
-        const nextX = this.position[0] + rightX * this.speed * deltaTime
-        const nextZ = this.position[2] + rightZ * this.speed * deltaTime
-        const cellX = Math.floor(nextX)
-        const cellZ = Math.floor(nextZ)
-        if (
-            cellX >= 0 && cellX < maze.size &&
-            cellZ >= 0 && cellZ < maze.size &&
-            maze.grid[cellZ]![cellX] === 0
-        ) {
-            this.position[0] = nextX
-            this.position[2] = nextZ
-        }
+        const nextX = this.position[0] + Math.sin(this.direction) * this.speed * deltaTime
+        const nextZ = this.position[2] - Math.cos(this.direction) * this.speed * deltaTime
+        this.updatePosition(maze, nextX, nextZ)
     }
 
     rotate(deltaTime: number) {
         this.direction += this.rotationSpeed * deltaTime
+    }
+
+    private updatePosition(maze: Maze, nextX: number, nextZ: number) {
+        if (!maze.isWall(nextX, nextZ)) {
+            this.position[0] = nextX
+            this.position[2] = nextZ
+        }
     }
 }
 

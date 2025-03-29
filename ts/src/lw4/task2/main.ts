@@ -41,7 +41,6 @@ class App {
 
         this.maze = new Maze()
         this.player = new Player()
-
         this.initCubeBuffers()
         this.setupEventListeners()
 
@@ -53,51 +52,18 @@ class App {
     }
 
     private render = (time: number) => {
-        const deltaTime = (time - this.lastTime) / 1000 // time в миллисекундах, делим на 1000, чтобы получить секунды
+        const deltaTime = (time - this.lastTime) / 1000
         this.lastTime = time
         requestAnimationFrame(this.render)
-        const gl = this.gl
-        gl.enable(gl.DEPTH_TEST)
-        gl.clearColor(0.2, 0.2, 0.2, 1)
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+        this.gl.enable(this.gl.DEPTH_TEST)
+        this.gl.clearColor(0.2, 0.2, 0.2, 1)
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
 
-        // Перед отрисовкой обновляем позицию игрока
         this.updatePlayer(deltaTime)
 
-        const projectionMatrix = mat4.create()
-        const fov = (60 * Math.PI) / 180
-        const aspect = this.canvas.width / this.canvas.height
-        const near = 0.1
-        const far = 100
-        mat4.perspective(projectionMatrix, fov, aspect, near, far)
-
-        // Камера установлена в позиции игрока, высота фиксирована (например, 0.5)
-        const eye = vec3.fromValues(this.player.position[0], this.player.position[1], this.player.position[2])
-        const center = vec3.fromValues(
-            eye[0] + Math.cos(this.player.direction),
-            eye[1],
-            eye[2] + Math.sin(this.player.direction),
-        )
-        const up = vec3.fromValues(0, 1, 0)
-        const viewMatrix = mat4.create()
-        mat4.lookAt(viewMatrix, eye, center, up)
-
-        for (let z = 0; z < this.maze.size; z++) {
-            for (let x = 0; x < this.maze.size; x++) {
-                if (this.maze.grid[z]![x] === 1) {
-                    const modelMatrix = mat4.create()
-                    mat4.translate(modelMatrix, modelMatrix, [x, 0, z])
-                    const mvpMatrix = mat4.create()
-                    mat4.multiply(mvpMatrix, projectionMatrix, viewMatrix)
-                    mat4.multiply(mvpMatrix, mvpMatrix, modelMatrix)
-                    gl.uniformMatrix4fv(this.uMatrixLocation, false, mvpMatrix)
-                    gl.uniform4fv(this.uColorLocation, [1, 0, 0, 1])
-                    gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer)
-                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeIndexBuffer)
-                    gl.drawElements(gl.TRIANGLES, this.cubeIndexCount, gl.UNSIGNED_SHORT, 0)
-                }
-            }
-        }
+        const projectionMatrix = this.calcProjectionMatrix()
+        const viewMatrix =  this.calcViewMatrix()
+        this.drawMaze(projectionMatrix, viewMatrix)
     }
 
     private updatePlayer(deltaTime: number) {
@@ -159,6 +125,55 @@ class App {
 
     private handleKeyUp = (event: KeyboardEvent) => {
         this.keys[event.key] = false
+    }
+
+    private calcProjectionMatrix() {
+        const projectionMatrix = mat4.create()
+        const fov = (60 * Math.PI) / 180
+        const aspect = this.canvas.width / this.canvas.height
+        const near = 0.1
+        const far = 100
+        mat4.perspective(projectionMatrix, fov, aspect, near, far)
+
+        return projectionMatrix
+    }
+
+    private calcViewMatrix() {
+        const viewMatrix = mat4.create()
+        const eye = vec3.fromValues(this.player.position[0], this.player.position[1], this.player.position[2])
+        const center = vec3.fromValues(
+            eye[0] + Math.cos(this.player.direction),
+            eye[1],
+            eye[2] + Math.sin(this.player.direction),
+        )
+        const up = vec3.fromValues(0, 1, 0)
+        mat4.lookAt(viewMatrix, eye, center, up)
+
+        return viewMatrix
+    }
+
+    private calcFinalMatrix(x: number, z: number, projectionMatrix: mat4, viewMatrix: mat4) {
+        const modelMatrix = mat4.create()
+        mat4.translate(modelMatrix, modelMatrix, [x, 0, z])
+        const mvpMatrix = mat4.create()
+        mat4.multiply(mvpMatrix, projectionMatrix, viewMatrix)
+        mat4.multiply(mvpMatrix, mvpMatrix, modelMatrix)
+
+        return mvpMatrix
+    }
+
+    // вынести отрисовку в отдельный класс
+    private drawMaze(projectionMatrix: mat4, viewMatrix: mat4) {
+        for (let z = 0; z < this.maze.size; z++) {
+            for (let x = 0; x < this.maze.size; x++) {
+                if (this.maze.grid[z]![x] === 1) {
+                    const mvpMatrix = this.calcFinalMatrix(x, z, projectionMatrix, viewMatrix)
+                    this.gl.uniformMatrix4fv(this.uMatrixLocation, false, mvpMatrix)
+                    this.gl.uniform4fv(this.uColorLocation, [(x / this.maze.size),  (z / this.maze.size), 0.3, 1])
+                    this.gl.drawElements(this.gl.TRIANGLES, this.cubeIndexCount, this.gl.UNSIGNED_SHORT, 0)
+                }
+            }
+        }
     }
 }
 

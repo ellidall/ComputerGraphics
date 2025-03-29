@@ -7,6 +7,12 @@ class Maze {
         this.grid = this.getFixedMaze()
     }
 
+    isWall(x: number, z: number): boolean {
+        const gridX = Math.floor(x)
+        const gridZ = Math.floor(z)
+        return this.grid[gridZ]?.[gridX] === 1
+    }
+
     private getFixedMaze(): number[][] {
         return [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
