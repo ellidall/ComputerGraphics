@@ -9,15 +9,15 @@ enum BlockType {
 }
 
 class Block {
-	constructor(
+    constructor(
         public type: BlockType,
         public x: number,
         public z: number,
-	) {
-	}
+    ) {
+    }
 }
 
 export {
-	Block,
-	BlockType,
+    Block,
+    BlockType,
 }

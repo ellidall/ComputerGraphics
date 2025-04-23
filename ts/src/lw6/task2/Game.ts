@@ -5,8 +5,8 @@ import {createShaderProgram} from './utils/WebGLUtils'
 
 class Game {
 	private gl: WebGLRenderingContext
-	private program: WebGLProgram
-	private map: Map
+	private readonly program: WebGLProgram
+	private readonly map: Map
 	private blockRenderer: BlockRenderer
 
 	constructor(gl: WebGLRenderingContext) {
@@ -17,6 +17,7 @@ class Game {
 	}
 
 	update(deltaTime: number): void {
+		console.log({deltaTime})
 		// В будущем: обновление танков, пуль, логики
 	}
 

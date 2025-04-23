@@ -11,7 +11,7 @@ class Map {
 			this.grid[z] = []
 			for (let x = 0; x < this.size; x++) {
 				const type = this.generateBlockType(x, z)
-				this.grid[z][x] = new Block(type, x, z)
+				this.grid[z]![x] = new Block(type, x, z)
 			}
 		}
 	}

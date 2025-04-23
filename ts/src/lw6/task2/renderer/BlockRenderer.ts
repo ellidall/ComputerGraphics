@@ -17,11 +17,11 @@ class BlockRenderer extends Renderer {
 
 		for (let z = 0; z < map.size; z++) {
 			for (let x = 0; x < map.size; x++) {
-				const block = map.grid[z][x]
-				const texture = this.textures[block.type]
+				const block = map.grid[z]![x]
+				const texture = this.textures[block!.type]
 
 				gl.activeTexture(gl.TEXTURE0)
-				gl.bindTexture(gl.TEXTURE_2D, texture)
+				gl.bindTexture(gl.TEXTURE_2D, texture!)
 				gl.uniform1i(uTextureLocation, 0)
 
 				const modelMatrix = mat4.create()
