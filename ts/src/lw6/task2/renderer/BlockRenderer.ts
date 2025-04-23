@@ -1,70 +1,92 @@
-import {mat4} from 'gl-matrix'
-import {Map} from '../Map'
-import {Renderer} from './Renderer'
+import { mat4 } from 'gl-matrix'
+import { Map } from '../Map'
+import { Renderer } from './Renderer'
 
 class BlockRenderer extends Renderer {
-	private textures: WebGLTexture[] = []
+	private vertexBuffer: WebGLBuffer | null = null
+	private indexBuffer: WebGLBuffer | null = null
+	private colorMap: { [key: number]: [number, number, number] } = {
+		0: [0.5, 0.5, 0.5],  // Ground (серый)
+		1: [0.8, 0.2, 0.2],  // Brick (красный)
+		2: [0.2, 0.2, 0.8],  // Water (синий)
+		3: [0.8, 0.8, 0.2],  // Armor (желтый)
+		4: [0.2, 0.8, 0.2],  // Ice (зеленый)
+		5: [0.4, 0.2, 0.2],  // Tree (темно-коричневый)
+		6: [0.6, 0.6, 0.6],  // Base (серый светлый)
+	};
 
 	constructor(gl: WebGLRenderingContext, program: WebGLProgram) {
-		super(gl, program)
-		this.loadTextures()
+		super(gl, program);
+		this.loadGeometry();
 	}
 
 	render(map: Map, projectionMatrix: mat4, viewMatrix: mat4): void {
-		const gl = this.gl
-		const uMatrixLocation = gl.getUniformLocation(this.program, 'u_matrix')
-		const uTextureLocation = gl.getUniformLocation(this.program, 'u_texture')
+		const gl = this.gl;
+		const uMatrixLocation = gl.getUniformLocation(this.program, 'u_matrix');
+		const uColorLocation = gl.getUniformLocation(this.program, 'u_color');
 
 		for (let z = 0; z < map.size; z++) {
 			for (let x = 0; x < map.size; x++) {
-				const block = map.grid[z]![x]
-				const texture = this.textures[block!.type]
+				const block = map.grid[z]![x];
+				const color = this.colorMap[block!.type] || [1, 1, 1];
 
-				gl.activeTexture(gl.TEXTURE0)
-				gl.bindTexture(gl.TEXTURE_2D, texture!)
-				gl.uniform1i(uTextureLocation, 0)
+				gl.uniform3fv(uColorLocation, color);
 
-				const modelMatrix = mat4.create()
-				mat4.translate(modelMatrix, modelMatrix, [x, 0, z])
-				const mvpMatrix = mat4.create()
-				mat4.multiply(mvpMatrix, projectionMatrix, viewMatrix)
-				mat4.multiply(mvpMatrix, mvpMatrix, modelMatrix)
+				const modelMatrix = mat4.create();
+				mat4.translate(modelMatrix, modelMatrix, [x, 0, z]);
+				const mvpMatrix = mat4.create();
+				mat4.multiply(mvpMatrix, projectionMatrix, viewMatrix);
+				mat4.multiply(mvpMatrix, mvpMatrix, modelMatrix);
 
-				gl.uniformMatrix4fv(uMatrixLocation, false, mvpMatrix)
-				gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0)
+				gl.uniformMatrix4fv(uMatrixLocation, false, mvpMatrix);
+
+				// Привязка буферов и атрибутов
+				const aPosition = gl.getAttribLocation(this.program, 'a_position');
+				const aTexcoord = gl.getAttribLocation(this.program, 'a_texcoord');
+
+				gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+				gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 5 * 4, 0);
+				gl.enableVertexAttribArray(aPosition);
+
+				gl.vertexAttribPointer(aTexcoord, 2, gl.FLOAT, false, 5 * 4, 3 * 4);
+				gl.enableVertexAttribArray(aTexcoord);
+
+				gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+
+				gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 			}
 		}
 	}
 
-	private loadTextures(): void {
-		const urls = [
-			'textures/ground.jpg',
-			'textures/brick.jpg',
-			'textures/water.jpg',
-			'textures/armor.jpg',
-			'textures/ice.jpg',
-			'textures/tree.jpg',
-			'textures/base.jpg',
-		]
+	private loadGeometry() {
+		const vertices = new Float32Array([
+			// позиция         // текстура
+			-0.5, -0.5, -0.5, 0, 0, // 0
+			0.5, -0.5, -0.5, 1, 0, // 1
+			0.5,  0.5, -0.5, 1, 1, // 2
+			-0.5,  0.5, -0.5, 0, 1, // 3
+			-0.5, -0.5,  0.5, 0, 0, // 4
+			0.5, -0.5,  0.5, 1, 0, // 5
+			0.5,  0.5,  0.5, 1, 1, // 6
+			-0.5,  0.5,  0.5, 0, 1, // 7
+		]);
 
-		for (const url of urls) {
-			const texture = this.gl.createTexture()!
-			this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
-			const pixel = new Uint8Array([255, 255, 255, 255])
-			this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0,
-				this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixel)
+		const indices = new Uint16Array([
+			0, 1, 2, 2, 3, 0, // back
+			4, 5, 6, 6, 7, 4, // front
+			3, 2, 6, 6, 7, 3, // top
+			0, 1, 5, 5, 4, 0, // bottom
+			1, 2, 6, 6, 5, 1, // right
+			0, 3, 7, 7, 4, 0  // left
+		]);
 
-			const image = new Image()
-			image.src = url
-			image.onload = () => {
-				this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
-				this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA,
-					this.gl.RGBA, this.gl.UNSIGNED_BYTE, image)
-				this.gl.generateMipmap(this.gl.TEXTURE_2D)
-			}
+		this.vertexBuffer = this.gl.createBuffer()!;
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, vertices, this.gl.STATIC_DRAW);
 
-			this.textures.push(texture)
-		}
+		this.indexBuffer = this.gl.createBuffer()!;
+		this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+		this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, indices, this.gl.STATIC_DRAW);
 	}
 }
 

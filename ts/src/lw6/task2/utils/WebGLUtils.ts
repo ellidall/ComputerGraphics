@@ -10,7 +10,7 @@ const vertexShaderSource = `
   }
 `
 
-const fragmentShaderSource = `
+const fragmentShaderTextureSource = `
   precision mediump float;
   uniform sampler2D u_texture;
   varying vec2 v_texcoord;
@@ -20,38 +20,46 @@ const fragmentShaderSource = `
   }
 `
 
+const fragmentShaderColorSource = `
+  precision mediump float;
+  uniform vec3 u_color; // Цвет для использования
+  void main() {
+    gl_FragColor = vec4(u_color, 1.0);
+  }
+`
+
 const compileShader = (gl: WebGLRenderingContext, type: number, source: string): WebGLShader => {
-    const shader = gl.createShader(type)
+    const shader = gl.createShader(type);
     if (!shader) {
-        throw new Error('Не удалось создать шейдер')
+        throw new Error('Не удалось создать шейдер');
     }
-    gl.shaderSource(shader, source)
-    gl.compileShader(shader)
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        const err = gl.getShaderInfoLog(shader)
-        gl.deleteShader(shader)
-        throw new Error('Ошибка компиляции шейдера: ' + err)
+        const err = gl.getShaderInfoLog(shader);
+        gl.deleteShader(shader);
+        throw new Error('Ошибка компиляции шейдера: ' + err);
     }
-    return shader
-}
+    return shader;
+};
 
-const createShaderProgram = (gl: WebGLRenderingContext): WebGLProgram => {
-    const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
-    const fragmentShader = compileShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
+const createShaderProgram = (gl: WebGLRenderingContext, useTexture: boolean = true): WebGLProgram => {
+    const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = compileShader(gl, gl.FRAGMENT_SHADER, useTexture ? fragmentShaderTextureSource : fragmentShaderColorSource);
 
-    const program = gl.createProgram()
+    const program = gl.createProgram();
     if (!program) {
-        throw new Error('Не удалось создать программу')
+        throw new Error('Не удалось создать программу');
     }
-    gl.attachShader(program, vertexShader)
-    gl.attachShader(program, fragmentShader)
-    gl.linkProgram(program)
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        const err = gl.getProgramInfoLog(program)
-        throw new Error('Ошибка линковки программы: ' + err)
+        const err = gl.getProgramInfoLog(program);
+        throw new Error('Ошибка линковки программы: ' + err);
     }
-    return program
-}
+    return program;
+};
 
 export {
     createShaderProgram,
