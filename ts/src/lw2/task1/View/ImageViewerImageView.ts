@@ -47,8 +47,8 @@ class ImageViewerImageView implements IDocumentListener {
 	}
 
 	private initEvents() {
-		this.canvas.addEventListener('mousedown', (event) => this.onMouseDown(event))
-		window.addEventListener('mousemove', (event) => this.onMouseMove(event))
+		this.canvas.addEventListener('mousedown', event => this.onMouseDown(event))
+		window.addEventListener('mousemove', event => this.onMouseMove(event))
 		window.addEventListener('mouseup', () => this.onMouseUp())
 	}
 
@@ -60,7 +60,9 @@ class ImageViewerImageView implements IDocumentListener {
 	}
 
 	private onMouseMove(event: MouseEvent) {
-		if (!this.isDragging) return
+		if (!this.isDragging) {
+			return
+		}
 
 		const dx = event.clientX - this.lastX
 		const dy = event.clientY - this.lastY

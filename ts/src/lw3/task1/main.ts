@@ -29,7 +29,7 @@ class App {
 		this.parabola = new Parabola(gl, this.program)
 		this.axes = new Axes(gl, this.program)
 
-		this.orthoMatrix = computeOrthoMatrix(this.canvas.width, this.canvas.height,)
+		this.orthoMatrix = computeOrthoMatrix(this.canvas.width, this.canvas.height)
 		this.setupEventListeners()
 	}
 

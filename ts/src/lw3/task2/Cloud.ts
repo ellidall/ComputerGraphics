@@ -1,5 +1,5 @@
-import { Position, Renderable } from './types'
-import { getWorldSize } from './WebGLUtils'
+import {Position, Renderable} from './types'
+import {getWorldSize} from './WebGLUtils'
 
 type CloudData = {
 	position: Position,
@@ -37,7 +37,7 @@ class Cloud implements Renderable {
 
 	// управлять позицией вершин с помощью матрицы
 	update() {
-		const { width } = getWorldSize()
+		const {width} = getWorldSize()
 		this.data.position.x -= this.data.speed
 		if (this.data.position.x > width) {
 			this.data.position.x = -width
@@ -60,7 +60,7 @@ class Cloud implements Renderable {
 			const angle = (i / this.segments) * 2 * Math.PI
 			vertices.push(
 				this.data.position.x + this.radiusX * Math.cos(angle),
-				this.data.position.y + this.radiusY * Math.sin(angle)
+				this.data.position.y + this.radiusY * Math.sin(angle),
 			)
 		}
 		vertices.push(this.data.position.x, this.data.position.y)

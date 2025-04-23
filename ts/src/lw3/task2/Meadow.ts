@@ -9,7 +9,7 @@ class Meadow implements Renderable {
 		private readonly gl: WebGLRenderingContext,
 		private readonly program: WebGLProgram,
 	) {
-		this.color = { r: 0.3, g: 0.8, b: 0.4, a: 1 }
+		this.color = {r: 0.3, g: 0.8, b: 0.4, a: 1}
 		this.vertices = this.createMeadowVertices()
 	}
 
