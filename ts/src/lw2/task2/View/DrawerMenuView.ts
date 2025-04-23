@@ -122,7 +122,7 @@ class DrawerMenuView {
 
 	private handleSaveJpeg() {
 		const canvas = this.canvasView.getCanvas()
-		canvas.toBlob(blob => blob && saveAs(blob, 'image.jpg'), 'image/jpeg')
+		canvas.toBlob(blob => blob && saveAs(blob, 'wall1.jpg'), 'image/jpeg')
 	}
 }
 
