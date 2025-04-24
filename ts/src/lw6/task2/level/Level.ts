@@ -1,4 +1,4 @@
-import {Map} from '../Map'
+import {Map} from './Map'
 
 abstract class Level {
     abstract createMap(): Map

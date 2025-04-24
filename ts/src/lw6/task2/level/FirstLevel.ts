@@ -1,6 +1,6 @@
 import {Level} from './Level'
-import {Block, BlockType} from '../Block'
-import {Map} from '../Map'
+import {Block, BlockType} from '../block/Block'
+import {Map} from './Map'
 
 class FirstLevel extends Level {
     // private readonly mapData: number[][] = [

@@ -1,5 +1,5 @@
 import {mat4} from 'gl-matrix'
-import {Map} from '../Map'
+import {Map} from '../level/Map'
 import {Renderer} from './Renderer'
 
 class BlockRenderer extends Renderer {

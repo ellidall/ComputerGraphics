@@ -20,7 +20,7 @@ class App {
         if (!gl) throw new Error('WebGL не поддерживается')
 
         this.gl = gl
-        this.game = new Game(gl)
+        this.game = new Game(gl, this.keys)
 
         this.setupEventListeners()
         this.resizeCanvas()
