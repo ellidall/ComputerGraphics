@@ -21,7 +21,6 @@ class Game {
     }
 
     update(deltaTime: number): void {
-        console.log({deltaTime})
         // В будущем: обновление танков, пуль, логики
     }
 

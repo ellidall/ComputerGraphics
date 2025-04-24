@@ -1,6 +1,6 @@
 import './index.css'
 import {mat4, vec3} from 'gl-matrix'
-import {Game} from "./Game"
+import {Game} from './Game'
 
 class App {
     private readonly canvas: HTMLCanvasElement
