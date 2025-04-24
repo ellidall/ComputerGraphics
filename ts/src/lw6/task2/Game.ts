@@ -20,6 +20,10 @@ class Game {
         this.blockRenderer = new BlockRenderer(gl, this.program)
     }
 
+    getMapSize(): number {
+        return this.map.size;
+    }
+
     update(deltaTime: number): void {
         // В будущем: обновление танков, пуль, логики
     }

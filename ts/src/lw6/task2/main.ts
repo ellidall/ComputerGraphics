@@ -79,10 +79,14 @@ class App {
     }
 
     private calcViewMatrix() {
-        const viewMatrix = mat4.create()
-        const eye = vec3.fromValues(7, 10, 20)
-        const center = vec3.fromValues(7, 0, 7)
+        const size = this.game.getMapSize()
+        const centerOffset = size / 2
+
+        const eye = vec3.fromValues(centerOffset, 10, centerOffset + 8)
+        const center = vec3.fromValues(centerOffset, 0, centerOffset)
         const up = vec3.fromValues(0, 1, 0)
+
+        const viewMatrix = mat4.create()
         mat4.lookAt(viewMatrix, eye, center, up)
         return viewMatrix
     }
