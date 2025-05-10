@@ -8,6 +8,25 @@ enum BlockType {
     Base,
 }
 
+const convertBlockTypeToNumber = (type: BlockType): number => {
+    switch (type) {
+        case BlockType.Ground:
+            return 0
+        case BlockType.Brick:
+            return 1
+        case BlockType.Water:
+            return 2
+        case BlockType.Armor:
+            return 3
+        case BlockType.Ice:
+            return 4
+        case BlockType.Tree:
+            return 5
+        case BlockType.Base:
+            return 6
+    }
+}
+
 class Block {
     constructor(
         public type: BlockType,
@@ -37,4 +56,5 @@ class Block {
 export {
     Block,
     BlockType,
+    convertBlockTypeToNumber,
 }

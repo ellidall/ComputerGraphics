@@ -28,8 +28,8 @@ class BlockRenderer extends Renderer {
         const uMatrixLocation = gl.getUniformLocation(this.program, 'u_matrix');
         const uColorLocation = gl.getUniformLocation(this.program, 'u_color');
 
-        for (let z = 0; z < map.size; z++) {
-            for (let x = 0; x < map.size; x++) {
+        for (let z = 0; z < map.grid.length; z++) {
+            for (let x = 0; x < map.grid[z]!.length; x++) {
                 const block = map.grid[z]![x];
                 const color = this.colorMap[block!.type] || [1, 1, 1];
 

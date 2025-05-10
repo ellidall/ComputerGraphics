@@ -1,4 +1,5 @@
-import { vec3 } from 'gl-matrix';
+import { vec3 } from 'gl-matrix'
+import {Block, BlockType} from "../block/Block";
 
 enum TankDirection {
     FORWARD,
@@ -8,61 +9,73 @@ enum TankDirection {
 }
 
 class Tank {
-    private position: vec3
-    private direction: vec3 // Направление движения
-    private speed: number
-    private size: number
+    private readonly grid: Block[][]
+    private readonly position: vec3
+    private readonly speed: number
+    private readonly size: number
 
-    constructor(startX: number, startY: number, size: number = 1) {
-        this.position = vec3.fromValues(startX, 0, startY); // Начальная позиция танка
-        this.direction = vec3.fromValues(0, 0, 1); // Изначально танк двигается вперед
-        this.speed = 0.1; // Скорость движения
-        this.size = size; // Размер танка
+    constructor(grid: Block[][], startX: number, startZ: number, speed: number, size: number = 0.5) {
+        this.grid = grid
+        this.position = vec3.fromValues(startX, 0, startZ)
+        this.speed = speed
+        this.size = size
     }
 
-    // Метод для перемещения танка
-    move(direction: TankDirection, deltaTime: number): void {
-        let moveX = 0;
-        let moveZ = 0;
+    getPosition(): vec3 {
+        return this.position
+    }
+
+    getSpeed(): number {
+        return this.speed
+    }
+
+    getSize(): number {
+        return this.size
+    }
+
+    move(direction: TankDirection, distance: number): void {
+        let moveX = 0
+        let moveZ = 0
 
         switch (direction) {
             case TankDirection.FORWARD:
-                moveZ = 1;
-                break;
+                moveZ = -distance
+                break
             case TankDirection.BACK:
-                moveZ = -1;
-                break;
+                moveZ = distance
+                break
             case TankDirection.LEFT:
-                moveX = -1;
-                break;
+                moveX = -distance
+                break
             case TankDirection.RIGHT:
-                moveX = 1;
-                break;
+                moveX = distance
+                break
         }
 
-        const distance = this.speed * deltaTime;
-        this.position[0] += moveX * distance;
-        this.position[2] += moveZ * distance;
+        this.position[0] += moveX
+        this.position[2] += moveZ
     }
 
-    // Стрельба
     shoot(): void {
-        console.log('Танк стреляет!');
-        // Логика для стрельбы
+        console.log('Танк стреляет!')
     }
 
-    // Получаем текущую позицию танка
-    getPosition(): vec3 {
-        return this.position;
-    }
+    isMoveValid(newX: number, newZ: number): boolean {
+        const x = Math.floor(newX);
+        const z = Math.floor(newZ);
 
-    // Получаем направление танка
-    getDirection(): vec3 {
-        return this.direction;
+        if (x < 0 || z < 0 || x >= this.grid[0]!.length || z >= this.grid.length) {
+            console.log('Вышли за пределы карты:', x, z);
+            return false;
+        }
+
+        const type = this.grid[z]![x]!.type;
+        console.log(`Проверка блока ${x},${z}:`, type);
+        return type === BlockType.Ground;
     }
 }
 
 export {
     Tank,
     TankDirection,
-};
+}

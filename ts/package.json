@@ -10,7 +10,8 @@
   "dependencies": {
     "earcut": "^3.0.1",
     "file-saver": "^2.0.5",
-    "gl-matrix": "^3.4.3"
+    "gl-matrix": "^3.4.3",
+    "webgl-obj-loader": "^2.0.8"
   },
   "devDependencies": {
     "@types/earcut": "^3.0.0",

@@ -1,31 +1,29 @@
-import { Block, BlockType } from '../block/Block'
+import {Block, BlockType, convertBlockTypeToNumber} from '../block/Block'
 
 class Map {
-	readonly size: number
 	readonly grid: Block[][]
 
 	constructor(mapData: BlockType[][]) {
-		this.size = mapData.length
 		this.grid = []
 
-		for (let z = 0; z < this.size; z++) {
+		for (let z = 0; z < mapData.length; z++) {
 			this.grid[z] = []
-			for (let x = 0; x < this.size; x++) {
+			for (let x = 0; x < mapData[z]!.length; x++) {
 				const type = mapData[z]![x]
 				this.grid[z]![x] = new Block(type!, x, z)
 			}
 		}
 	}
 
-	isMoveValid(newX: number, newZ: number): boolean {
-		const gridX = Math.floor(newX);
-		const gridZ = Math.floor(newZ);
+	getGrid(): Block[][] {
+		return this.grid
+	}
 
-		if (gridX < 0 || gridZ < 0 || gridX >= this.grid[gridZ]!.length || gridZ >= this.grid.length) {
-			return false;
-		}
-
-		return this.grid[gridZ]![gridX]!.type === BlockType.Ground;
+	isWall(x: number, z: number): boolean {
+		const gridX = Math.floor(x)
+		const gridZ = Math.floor(z)
+		console.log({gridX, gridZ})
+		return convertBlockTypeToNumber(this.grid[gridZ]?.[gridX]!.type!) !== 0
 	}
 }
 

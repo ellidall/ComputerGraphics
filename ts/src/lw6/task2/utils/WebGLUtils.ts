@@ -22,7 +22,7 @@ const fragmentShaderTextureSource = `
 
 const fragmentShaderColorSource = `
   precision mediump float;
-  uniform vec3 u_color; // Цвет для использования
+  uniform vec3 u_color;
   void main() {
     gl_FragColor = vec4(u_color, 1.0);
   }

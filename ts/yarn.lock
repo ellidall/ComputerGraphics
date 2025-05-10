@@ -2285,6 +2285,11 @@ vite@^5.4.10:
   optionalDependencies:
     fsevents "~2.3.3"
 
+webgl-obj-loader@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/webgl-obj-loader/-/webgl-obj-loader-2.0.8.tgz#4c6769fef9ae56912c9f95acca718c0ee45b3487"
+  integrity sha512-5QoPMU437sJ5k/x9Z4ZJt/V0vQD7gNsPv38EwAhUbm9L85VPWK6RN88aI1KlbBGz8cj3OCkcLqqQcahZTy78QQ==
+
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/which-boxed-primitive/-/which-boxed-primitive-1.0.2.tgz#13757bc89b209b049fe5d86430e21cf40a89a8e6"
