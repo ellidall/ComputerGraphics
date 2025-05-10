@@ -22,7 +22,7 @@ class Map {
 	isWall(x: number, z: number): boolean {
 		const gridX = Math.floor(x)
 		const gridZ = Math.floor(z)
-		console.log({gridX, gridZ})
+		// console.log({gridX, gridZ})
 		return convertBlockTypeToNumber(this.grid[gridZ]?.[gridX]!.type!) !== 0
 	}
 }

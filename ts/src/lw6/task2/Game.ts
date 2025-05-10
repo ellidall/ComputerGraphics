@@ -27,7 +27,7 @@ class Game {
         this.tank = new Tank(this.map.getGrid(), 1, 1, 2)
 
         this.blockRenderer = new BlockRenderer(gl, this.program)
-        this.tankRenderer = new TankRenderer(gl, this.program, this.tank)
+        this.tankRenderer = new TankRenderer(gl, this.program)
     }
 
     render(projectionMatrix: mat4, viewMatrix: mat4): void {
@@ -54,7 +54,7 @@ class Game {
         let gridX = 0
         let gridZ = 0
 
-        console.log("Current tank pos: ", pos)
+        // console.log("Current tank pos: ", pos)
         if (this.isKeyPressed('w') || this.isKeyPressed('ArrowUp')) {
             gridX = Math.floor(pos[0])
             gridZ = Math.floor(pos[2] - distance)

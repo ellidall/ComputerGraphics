@@ -1,0 +1,13 @@
+# Blender MTL File: 'Tank0_001.blend'
+# Material Count: 1
+
+newmtl M_Tank
+Ns 70.263855
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.024191 0.006134
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Palette.png

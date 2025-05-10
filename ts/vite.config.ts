@@ -4,6 +4,7 @@ import url from 'url'
 import {ConfigEnv} from 'vite'
 import {buildViteConfig} from './config/build/buildViteConfig'
 import {BuildMode, BuildPaths} from './config/build/types/config'
+import string from 'vite-plugin-string'
 
 // @ts-expect-error
 const __filename = url.fileURLToPath(import.meta.url)
@@ -26,5 +27,6 @@ export default (configEnv: ConfigEnv) => {
 		port: 3000,
 		root: path.resolve(__dirname, 'src', labName, taskName),
 		paths,
+		plugins: [string({ include: ['**/*.obj', '**/*.mtl'] })],
 	})
 }
