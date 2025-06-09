@@ -10,8 +10,8 @@ import string from 'vite-plugin-string'
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const labName = process.env.VITE_LAB || 'lw6'
-const taskName = process.env.VITE_TASK || 'task2'
+const labName = process.env.VITE_LAB || 'lw7'
+const taskName = process.env.VITE_TASK || 'task3'
 
 export default (configEnv: ConfigEnv) => {
 	const mode = (configEnv.mode ?? 'development') as BuildMode
