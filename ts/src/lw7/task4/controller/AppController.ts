@@ -30,7 +30,7 @@ export class AppController {
     private startRipple() {
         this.rippleAnimating = true;
         this.rippleTime = 0;
-        const duration = 1.5;
+        const duration = 2.0;
         const animateStep = (dt: number) => {
             this.rippleTime += dt;
             if (this.rippleTime < duration) {

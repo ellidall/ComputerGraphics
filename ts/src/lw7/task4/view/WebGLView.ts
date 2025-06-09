@@ -140,9 +140,6 @@ export class WebGLView {
       gl_FragColor = mix(colorA, colorB, reveal);
     }
     `;
-    // sin(20.0 * (dist - front))- периодическое колебание. 20 - частота волн
-    // amplitude - максимальная сила искажения
-    // smoothstep - ограничивает искажение в определённой зоне
 
     const gl = this.gl;
     const vs = gl.createShader(gl.VERTEX_SHADER)!;
