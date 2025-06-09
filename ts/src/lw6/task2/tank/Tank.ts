@@ -1,5 +1,4 @@
 import { vec3 } from 'gl-matrix'
-import {Block, BlockType} from "../block/Block";
 
 enum TankDirection {
     FORWARD,
@@ -9,16 +8,12 @@ enum TankDirection {
 }
 
 class Tank {
-    private readonly grid: Block[][]
     private readonly position: vec3
     private readonly speed: number
-    private readonly size: number
 
-    constructor(grid: Block[][], startX: number, startZ: number, speed: number, size: number = 0.5) {
-        this.grid = grid
+    constructor(startX: number, startZ: number, speed: number) {
         this.position = vec3.fromValues(startX, 0, startZ)
         this.speed = speed
-        this.size = size
     }
 
     getPosition(): vec3 {
@@ -27,10 +22,6 @@ class Tank {
 
     getSpeed(): number {
         return this.speed
-    }
-
-    getSize(): number {
-        return this.size
     }
 
     move(direction: TankDirection, distance: number): void {
@@ -58,20 +49,6 @@ class Tank {
 
     shoot(): void {
         console.log('Танк стреляет!')
-    }
-
-    isMoveValid(newX: number, newZ: number): boolean {
-        const x = Math.floor(newX);
-        const z = Math.floor(newZ);
-
-        if (x < 0 || z < 0 || x >= this.grid[0]!.length || z >= this.grid.length) {
-            console.log('Вышли за пределы карты:', x, z);
-            return false;
-        }
-
-        const type = this.grid[z]![x]!.type;
-        console.log(`Проверка блока ${x},${z}:`, type);
-        return type === BlockType.Ground;
     }
 }
 

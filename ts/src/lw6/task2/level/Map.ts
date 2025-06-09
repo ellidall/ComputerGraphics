@@ -20,6 +20,7 @@ class Map {
 	}
 
 	isWall(x: number, z: number): boolean {
+		return false
 		const gridX = Math.floor(x)
 		const gridZ = Math.floor(z)
 		// console.log({gridX, gridZ})
