@@ -146,7 +146,7 @@ class Renderer {
 		// Позиция занимает первые 3 значения (x, y, z)
 		gl.enableVertexAttribArray(aPositionLocation)
 		gl.vertexAttribPointer(aPositionLocation, 3, gl.FLOAT, false, stride, 0)
-		// Текстурные координаты занимают оставшиеся 2 значения (s, t)
+		// Текстурные координаты занимают оставшиеся 2 значения (s, morphingParameter)
 		gl.enableVertexAttribArray(aTexcoordLocation)
 		gl.vertexAttribPointer(aTexcoordLocation, 2, gl.FLOAT, false, stride, 3 * Float32Array.BYTES_PER_ELEMENT)
 	}

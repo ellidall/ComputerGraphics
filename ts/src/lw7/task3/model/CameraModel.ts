@@ -4,11 +4,6 @@ export class CameraModel {
     public radius: number = 4;
     public target: [number, number, number] = [0, 0, 0];
 
-    setAngles(theta: number, phi: number) {
-        this.theta = theta;
-        this.phi = Math.max(0.01, Math.min(Math.PI - 0.01, phi));
-    }
-
     setRadius(r: number) {
         this.radius = Math.max(1, r);
     }

@@ -36,7 +36,6 @@ export class WebGLView {
         gl.bufferData(gl.ARRAY_BUFFER, model.vertices, gl.STATIC_DRAW);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, model.colors, gl.STATIC_DRAW);
-        // Индексы для треугольников
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangleIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.triangleIndices, gl.STATIC_DRAW);
         this.triangleIndexCount = model.triangleIndices.length;
@@ -58,7 +57,7 @@ export class WebGLView {
         // Индексы
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangleIndexBuffer);
         // Uniforms
-        gl.uniform1f(this.uT, model.t);
+        gl.uniform1f(this.uT, model.morphingParameter);
         // Считаем modelView и normalMatrix
         const view = this.lookAt(camera.getEye(), camera.target, [0, 1, 0]);
         const modelView = mat4.create();
@@ -154,11 +153,12 @@ export class WebGLView {
       if (!gl_FrontFacing) N = -N;
 
       float diff = max(dot(N, L), 0.0);
-      vec3 color = vec3(0.1, 0.2, 0.7) * diff + vec3(0.1);
+      vec3 color = vec3(0.1, 0.7, 0.1) * diff + vec3(0.1);
       gl_FragColor = vec4(color, 1.0);
     }
     `;
-        // сделать вычисление лицевой и нелицивой стороны
+
+        // поправить артефакт с освещением
         const gl = this.gl;
         const vs = gl.createShader(gl.VERTEX_SHADER)!;
         gl.shaderSource(vs, vsSource);

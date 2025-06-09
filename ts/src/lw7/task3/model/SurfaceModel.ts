@@ -1,5 +1,5 @@
 export class SurfaceModel {
-    public t: number = 0; // Параметр морфинга [0,1]
+    public morphingParameter: number = 0;
     public resolution: number;
     public vertices: Float32Array;
     public triangleIndices: Uint16Array;
@@ -17,10 +17,6 @@ export class SurfaceModel {
             0, 0, 1, 0,
             0, 0, 0, 1
         ]);
-    }
-
-    setModelMatrix(mat: Float32Array) {
-        this.modelMatrix = mat;
     }
 
     generateVertices(): Float32Array {
@@ -60,7 +56,7 @@ export class SurfaceModel {
         return new Float32Array(cols);
     }
 
-    setT(t: number) {
-        this.t = Math.max(0, Math.min(1, t));
+    setMorphingParameter(morphingParameter: number) {
+        this.morphingParameter = Math.max(0, Math.min(1, morphingParameter));
     }
 } 

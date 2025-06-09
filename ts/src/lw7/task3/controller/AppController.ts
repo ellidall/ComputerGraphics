@@ -3,8 +3,8 @@ import {CameraModel} from '../model/CameraModel';
 import {WebGLView} from '../view/WebGLView';
 
 export class AppController {
-    private model: SurfaceModel;
-    private camera: CameraModel;
+    private readonly model: SurfaceModel;
+    private readonly camera: CameraModel;
     private view: WebGLView;
     private animating: boolean = false;
     private lastX: number = 0;
@@ -51,17 +51,17 @@ export class AppController {
 
     private startMorph() {
         this.animating = true;
-        const startT = this.model.t;
+        const startT = this.model.morphingParameter;
         const endT = startT < 0.5 ? 1 : 0;
         const duration = 1.5; // секунд
         const startTime = performance.now();
         const animateStep = (now: number) => {
             const t = Math.min(1, (now - startTime) / (duration * 1000));
-            this.model.setT(startT + (endT - startT) * t);
+            this.model.setMorphingParameter(startT + (endT - startT) * t);
             if (t < 1) {
                 requestAnimationFrame(animateStep);
             } else {
-                this.model.setT(endT);
+                this.model.setMorphingParameter(endT);
                 this.animating = false;
             }
         };
